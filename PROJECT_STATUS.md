@@ -8,6 +8,8 @@ O seu projeto **Print IA** foi inicializado e configurado com todas as tecnologi
 - **App Router** habilitado
 - **TypeScript** configurado
 - **ESLint** para linting
+- **Módulos:**
+  - `/admin/materiais`: Gestão de Papéis com Server Actions e validação Zod.
 - Servidor de desenvolvimento rodando em `http://localhost:3000`
 
 ### ✔️ Tailwind CSS
@@ -27,10 +29,15 @@ O seu projeto **Print IA** foi inicializado e configurado com todas as tecnologi
 - Exemplos na página inicial
 
 ### ✔️ Prisma
-- ORM configurado para PostgreSQL
-- Schema exemplo criado (`User` model)
-- Cliente Prisma em `lib/prisma.ts`
-- Arquivo `.env` com `DATABASE_URL`
+- **Versão:** v6.19.1 (Downgrade realizado para compatibilidade)
+- **Status:** Configurado e Tabelas Criadas
+- **Schema:**
+  - `Product`
+  - `PriceTable`
+  - `Finishing`
+  - `PaperStock`
+  - `Printer` & `PrinterSupply`
+- **Seeds:** Dados de exemplo (Konica 2060, Papel Couchê) inseridos.
 
 ## 📸 Página Inicial
 
