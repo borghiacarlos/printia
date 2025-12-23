@@ -10,6 +10,7 @@ O seu projeto **Print IA** foi inicializado e configurado com todas as tecnologi
 - **ESLint** para linting
 - **Módulos:**
   - `/admin/materiais`: Gestão de Papéis com Server Actions e validação Zod.
+  - `/admin/produtos/[id]/precos`: Tabela de Preços com validação de faixas overlapping.
 - Servidor de desenvolvimento rodando em `http://localhost:3000`
 
 ### ✔️ Tailwind CSS
