@@ -1,0 +1,45 @@
+{% extends "admin/change_list.html" %}
+{% load humanize %}
+
+{% block date_hierarchy %}
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+
+    <div
+        class="block p-6 border border-gray-100 rounded-default dark:border-gray-700 dark:border-base-800 border border-base-200">
+        <h3 class="font-medium text-gray-500 dark:text-gray-400 text-sm">
+            Total de Papéis
+        </h3>
+        <span
+            class="font-semibold text-2xl text-primary-600 dark:text-primary-500 text-font-important-light tracking-tight dark:text-font-important-dark">
+            {{ kpi.total_papeis|default:"0" }}
+        </span>
+    </div>
+
+    <div
+        class="block p-6 border border-gray-100 rounded-default dark:border-gray-700 dark:border-base-800 border border-base-200">
+        <h3 class="font-medium text-gray-500 dark:text-gray-400 text-sm">
+            Pacotes em Estoque
+        </h3>
+        <span
+            class="font-semibold text-2xl text-primary-600 dark:text-primary-500 text-font-important-light tracking-tight dark:text-font-important-dark">
+            {{ kpi.total_pacotes|default:"0" }}
+        </span>
+    </div>
+
+    <div
+        class="block p-6 border border-gray-100 rounded-default dark:border-gray-700 dark:border-base-800 border border-base-200">
+        <h3 class="font-medium text-gray-500 dark:text-gray-400 text-sm">
+            Valor em Estoque
+        </h3>
+        <span
+            class="font-semibold text-2xl text-primary-600 dark:text-primary-500 text-font-important-light tracking-tight dark:text-font-important-dark">
+            R$ {{ kpi.valor_estoque|floatformat:2|intcomma }}
+        </span>
+    </div>
+
+</div>
+
+{{ block.super }}
+
+{% endblock %}

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+from django.urls import reverse_lazy
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "django.contrib.humanize",
     "materiais",
 ]
 
@@ -57,10 +59,11 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -105,16 +108,111 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
 USE_TZ = True
+
+USE_THOUSAND_SEPARATOR = True
+DECIMAL_SEPARATOR = ','
+THOUSAND_SEPARATOR = '.'
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "core/static",
+]
+
+UNFOLD = {
+    "SITE_TITLE": "Print IA | Sistema Gráfico",
+    "SITE_HEADER": "Gestão Print IA",
+    "SITE_SYMBOL": "print", # Ícone do logo (pode ser 'speed', 'print', etc)
+    
+    # Cores personalizadas (Opcional - deixe padrão se preferir)
+    "COLORS": {
+        "primary": {
+            "50": "250 245 255",
+            "100": "243 232 255",
+            "500": "168 85 247", # Roxo padrão Unfold
+            "600": "147 51 234",
+            "900": "88 28 135",
+        },
+    },
+
+    # CONFIGURAÇÃO DO MENU LATERAL
+    "SIDEBAR": {
+        "show_search": True, # Mostra barra de busca no menu
+        "show_all_applications": False, # Esconde a lista padrão bagunçada
+        "navigation": [
+            {
+                "title": "Navegação",
+                "separator": True, # Linha divisória
+                "items": [
+                    {
+                        "title": "Dashboard",
+                        "icon": "dashboard", # Ícone do Material Symbols
+                        "link": reverse_lazy("admin:index"),
+                    },
+                ],
+            },
+            {
+                "title": "Catálogos",
+                "separator": True,
+                "collapsible": True, # Permite retrair/expandir
+                "items": [
+                    {
+                        "title": "Papéis",
+                        "icon": "description",
+                        "link": reverse_lazy("admin:materiais_papel_changelist"),
+                    },
+                    {
+                        "title": "Insumos e Acabamentos",
+                        "icon": "layers",
+                        "link": reverse_lazy("admin:materiais_insumo_changelist"),
+                    },
+                    {
+                        "title": "Fornecedores",
+                        "icon": "storefront",
+                        "link": reverse_lazy("admin:materiais_fornecedor_changelist"),
+                    },
+                ],
+            },
+            {
+                "title": "Movimentações",
+                "separator": True,
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": "Compras (Entradas)",
+                        "icon": "shopping_cart",
+                        "link": reverse_lazy("admin:materiais_comprapapel_changelist"),
+                    },
+                    {
+                        "title": "Baixas (Uso Interno)",
+                        "icon": "outbox",
+                        "link": reverse_lazy("admin:materiais_saidaestoque_changelist"),
+                    },
+                ],
+            },
+            {
+                "title": "Administração",
+                "separator": True,
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": "Usuários e Acessos",
+                        "icon": "people",
+                        "link": reverse_lazy("admin:auth_user_changelist"),
+                    },
+                ],
+            },
+        ],
+    },
+}
