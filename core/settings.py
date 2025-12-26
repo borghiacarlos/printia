@@ -153,11 +153,11 @@ UNFOLD = {
         "navigation": [
             {
                 "title": "Navegação",
-                "separator": True, # Linha divisória
+                "separator": True,
                 "items": [
                     {
                         "title": "Dashboard",
-                        "icon": "dashboard", # Ícone do Material Symbols
+                        "icon": "dashboard",
                         "link": reverse_lazy("admin:index"),
                     },
                 ],
@@ -172,15 +172,25 @@ UNFOLD = {
                         "icon": "description",
                         "link": reverse_lazy("admin:materiais_papel_changelist"),
                     },
-                    {   # NOVO
+                    {
                         "title": "Insumos (Custo)",
                         "icon": "inventory_2",
                         "link": reverse_lazy("admin:materiais_insumo_changelist"),
                     },
-                    {   # NOVO
+                    {
                         "title": "Acabamentos (Serviços)",
-                        "icon": "handyman", # ou 'cut', 'build'
+                        "icon": "handyman",
                         "link": reverse_lazy("admin:materiais_acabamento_changelist"),
+                    },
+                    {   # NOVO
+                        "title": "Impressoras e Ativos",
+                        "icon": "print",
+                        "link": reverse_lazy("admin:materiais_impressora_changelist"),
+                    },
+                     {   # NOVO (Opcional, se quiser ver a lista solta de peças)
+                        "title": "Peças e Suprimentos",
+                        "icon": "build_circle",
+                        "link": reverse_lazy("admin:materiais_componenteimpressora_changelist"),
                     },
                     {
                         "title": "Fornecedores",
@@ -189,28 +199,46 @@ UNFOLD = {
                     },
                 ],
             },
-            
-            # ... Dentro de "Movimentações" ...
-             {
+            {
                 "title": "Movimentações",
-                # ...
+                "separator": True,
+                "collapsible": True,
                 "items": [
                     {
                         "title": "Compras Papel",
                         "icon": "shopping_cart",
                         "link": reverse_lazy("admin:materiais_comprapapel_changelist"),
                     },
-                    {   # NOVO
+                    {
                         "title": "Compras Insumo",
                         "icon": "add_shopping_cart",
                         "link": reverse_lazy("admin:materiais_comprainsumo_changelist"),
                     },
-                    # ... Baixas Papel ...
-                ]
-             },
-
-            # ... Crie uma seção nova "Configurações" se quiser ...
-             {
+                    {   # NOVO
+                        "title": "Trocas de Suprimentos",
+                        "icon": "published_with_changes",
+                        "link": reverse_lazy("admin:materiais_trocasuprimento_changelist"),
+                    },
+                    {
+                        "title": "Baixas de Papel",
+                        "icon": "outbox",
+                        "link": reverse_lazy("admin:materiais_saidaestoque_changelist"),
+                    },
+                ],
+            },
+            {   # NOVA SEÇÃO
+                "title": "Relatórios e Leituras",
+                "separator": True,
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": "Leituras de Impressoras",
+                        "icon": "speed", 
+                        "link": reverse_lazy("admin:materiais_leituraimpressora_changelist"),
+                    },
+                ],
+            },
+            {
                 "title": "Configurações",
                 "separator": True,
                 "collapsible": True,
@@ -224,6 +252,11 @@ UNFOLD = {
                         "title": "Tags de Acabamentos",
                         "icon": "label",
                         "link": reverse_lazy("admin:materiais_categoriaacabamento_changelist"),
+                    },
+                    {
+                        "title": "Usuários e Acessos",
+                        "icon": "people",
+                        "link": reverse_lazy("admin:auth_user_changelist"),
                     },
                 ]
              }

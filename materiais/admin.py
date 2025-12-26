@@ -13,8 +13,9 @@ from django.db.models import Sum, F, DecimalField # <--- Importante para os cál
 from .models import (
     Papel, CompraPapel, SaidaEstoque, Fornecedor, TabelaPrecoPapel,
     Insumo, CompraInsumo, CategoriaInsumo,
-    Acabamento, TabelaPrecoAcabamento, CategoriaAcabamento
-)
+    Acabamento, TabelaPrecoAcabamento, CategoriaAcabamento,
+    Impressora, ComponenteImpressora, TrocaSuprimento, LeituraImpressora
+)  
 
 @admin.register(Fornecedor)
 class FornecedorAdmin(ModelAdmin):
@@ -231,3 +232,79 @@ class AcabamentoAdmin(ModelAdmin):
         if not precos: return "-"
         return f"Inicia em R$ {number_format(precos[0].valor_venda, 2)}"
     exibir_faixas.short_description = "Preço Base"
+
+# ==========================================
+# GESTÃO DE IMPRESSORAS
+# ==========================================
+
+class ComponenteInline(TabularInline):
+    model = ComponenteImpressora
+    extra = 0
+    tab = True
+    fields = ['nome', 'tipo', 'cor', 'rendimento_estimado', 'custo_medio_por_pagina']
+    readonly_fields = ['custo_medio_por_pagina']
+    verbose_name = "Componente"
+    verbose_name_plural = "Componentes Instalados"
+
+@admin.register(Impressora)
+class ImpressoraAdmin(ModelAdmin):
+    list_display = ['nome', 'modelo', 'contador_total_atual', 'exibir_click_mono', 'exibir_click_color']
+    inlines = [ComponenteInline]
+    
+    fieldsets = (
+        ('Identificação', {'fields': ('nome', 'marca', 'modelo')}),
+        ('Limitações Técnicas', {'fields': (('largura_max_mm', 'altura_max_mm'),)}),
+        ('Custos Calculados (Automático)', {'fields': ('custo_click_mono', 'custo_click_color', 'contador_total_atual')}),
+    )
+    readonly_fields = ['custo_click_mono', 'custo_click_color', 'contador_total_atual']
+
+    def exibir_click_mono(self, obj):
+        return f"R$ {number_format(obj.custo_click_mono, 5)}"
+    exibir_click_mono.short_description = "Custo P&B"
+
+    def exibir_click_color(self, obj):
+        return f"R$ {number_format(obj.custo_click_color, 5)}"
+    exibir_click_color.short_description = "Custo Color"
+
+
+@admin.register(ComponenteImpressora)
+class ComponenteImpressoraAdmin(ModelAdmin):
+    list_display = ['nome', 'impressora', 'cor', 'exibir_custo_medio']
+    list_filter = ['impressora', 'tipo', 'cor']
+    search_fields = ['nome']
+    
+    def exibir_custo_medio(self, obj):
+        return f"R$ {number_format(obj.custo_medio_por_pagina, 5)}"
+    exibir_custo_medio.short_description = "Custo Médio/Pág"
+
+
+@admin.register(TrocaSuprimento)
+class TrocaSuprimentoAdmin(ModelAdmin):
+    list_display = ['data_formatada', 'componente_nome', 'contador_no_momento', 'valor_compra', 'rendimento_anterior']
+    list_filter = [
+        ('data_troca', RangeDateFilter),
+        'componente__impressora',
+        'componente',
+    ]
+    autocomplete_fields = ['componente', 'fornecedor']
+    search_fields = ['componente__nome']
+
+    def componente_nome(self, obj):
+        return f"{obj.componente.nome} ({obj.componente.impressora.nome})"
+    componente_nome.short_description = "Componente"
+    
+    def rendimento_anterior(self, obj):
+        if obj.rendimento_real > 0:
+            return f"{obj.rendimento_real} págs"
+        return "Calculando..." # Aparece isso se for o registro mais recente
+    rendimento_anterior.short_description = "Duração do Anterior"
+
+    def data_formatada(self, obj):
+        return obj.data_troca.strftime('%d/%m/%Y')
+    data_formatada.short_description = "Data Troca"
+
+
+@admin.register(LeituraImpressora)
+class LeituraImpressoraAdmin(ModelAdmin):
+    list_display = ['impressora', 'data_leitura', 'contador_total']
+    list_filter = ['impressora', ('data_leitura', RangeDateFilter)]
