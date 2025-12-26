@@ -165,17 +165,22 @@ UNFOLD = {
             {
                 "title": "Catálogos",
                 "separator": True,
-                "collapsible": True, # Permite retrair/expandir
+                "collapsible": True,
                 "items": [
                     {
                         "title": "Papéis",
                         "icon": "description",
                         "link": reverse_lazy("admin:materiais_papel_changelist"),
                     },
-                    {
-                        "title": "Insumos e Acabamentos",
-                        "icon": "layers",
+                    {   # NOVO
+                        "title": "Insumos (Custo)",
+                        "icon": "inventory_2",
                         "link": reverse_lazy("admin:materiais_insumo_changelist"),
+                    },
+                    {   # NOVO
+                        "title": "Acabamentos (Serviços)",
+                        "icon": "handyman", # ou 'cut', 'build'
+                        "link": reverse_lazy("admin:materiais_acabamento_changelist"),
                     },
                     {
                         "title": "Fornecedores",
@@ -184,35 +189,44 @@ UNFOLD = {
                     },
                 ],
             },
-            {
+            
+            # ... Dentro de "Movimentações" ...
+             {
                 "title": "Movimentações",
-                "separator": True,
-                "collapsible": True,
+                # ...
                 "items": [
                     {
-                        "title": "Compras (Entradas)",
+                        "title": "Compras Papel",
                         "icon": "shopping_cart",
                         "link": reverse_lazy("admin:materiais_comprapapel_changelist"),
                     },
-                    {
-                        "title": "Baixas (Uso Interno)",
-                        "icon": "outbox",
-                        "link": reverse_lazy("admin:materiais_saidaestoque_changelist"),
+                    {   # NOVO
+                        "title": "Compras Insumo",
+                        "icon": "add_shopping_cart",
+                        "link": reverse_lazy("admin:materiais_comprainsumo_changelist"),
                     },
-                ],
-            },
-            {
-                "title": "Administração",
+                    # ... Baixas Papel ...
+                ]
+             },
+
+            # ... Crie uma seção nova "Configurações" se quiser ...
+             {
+                "title": "Configurações",
                 "separator": True,
                 "collapsible": True,
                 "items": [
-                    {
-                        "title": "Usuários e Acessos",
-                        "icon": "people",
-                        "link": reverse_lazy("admin:auth_user_changelist"),
+                     {
+                        "title": "Tags de Insumos",
+                        "icon": "label",
+                        "link": reverse_lazy("admin:materiais_categoriainsumo_changelist"),
                     },
-                ],
-            },
+                    {
+                        "title": "Tags de Acabamentos",
+                        "icon": "label",
+                        "link": reverse_lazy("admin:materiais_categoriaacabamento_changelist"),
+                    },
+                ]
+             }
         ],
     },
 }
