@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "django.contrib.humanize",
     "materiais",
+    "orcamentos",
 ]
 
 MIDDLEWARE = [
@@ -263,3 +264,10 @@ UNFOLD = {
         ],
     },
 }
+
+# Configuração de Login
+# Avisa ao Django para usar a tela do Admin quando precisar autenticar
+LOGIN_URL = '/admin/login/'
+
+# Para onde ir depois de logar (opcional, mas útil)
+LOGIN_REDIRECT_URL = '/orcamentos/novo/'
