@@ -183,6 +183,11 @@ UNFOLD = {
                         "icon": "handyman",
                         "link": reverse_lazy("admin:materiais_acabamento_changelist"),
                     },
+{
+                        "title": "Guilhotina (Cortes)",
+                        "icon": "content_cut", # Ícone de tesoura/corte
+                        "link": reverse_lazy("admin:materiais_guilhotinaconfig_changelist"),
+                    },
                     {   # NOVO
                         "title": "Impressoras e Ativos",
                         "icon": "print",

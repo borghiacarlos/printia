@@ -4,61 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Print IA | Orçamento</title>
+    <title>Print IA | Sistema Gráfico</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-masker@1.2.0/build/vanilla-masker.min.js"></script>
+
     <script>
         tailwind.config = {
-            darkMode: 'media', // ou 'class' se quiser toggle manual
+            darkMode: 'media',
             theme: {
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
-                        primary: {
-                            50: '#f5f3ff', 100: '#ede9fe', 500: '#8b5cf6', 600: '#7c3aed', 900: '#4c1d95',
-                        }
+                        primary: { 50: '#f5f3ff', 100: '#ede9fe', 500: '#8b5cf6', 600: '#7c3aed', 900: '#4c1d95' }
                     }
                 }
             }
         }
     </script>
-
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/vanilla-masker@1.2.0/build/vanilla-masker.min.js"></script>
-
     <style>
-        /* Ajustes finos de Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-
-        .dark ::-webkit-scrollbar-thumb {
-            background: #475569;
+        [x-cloak] {
+            display: none !important;
         }
     </style>
 </head>
 
-<body class="h-full text-gray-900 dark:text-gray-100 antialiased selection:bg-primary-100 selection:text-primary-900">
+<body class="h-full flex flex-col text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-900">
 
-    <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+    <header class="bg-white dark:bg-gray-800 shadow-sm z-30 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
+            <div class="flex justify-between h-16 items-center border-b border-gray-100 dark:border-gray-700">
+
                 <div class="flex items-center gap-3">
                     <div class="bg-primary-600 text-white p-1.5 rounded-lg">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,27 +47,71 @@
                             </path>
                         </svg>
                     </div>
-                    <span class="font-bold text-lg tracking-tight">Print IA <span class="text-gray-400 font-normal">|
-                            Calculadora</span></span>
+                    <span class="font-bold text-xl tracking-tight hidden sm:block">Print IA</span>
                 </div>
+
                 <div class="flex items-center gap-4">
+                    <span class="text-sm text-gray-500 hidden sm:inline">Olá, <b>{{ user.username|default:"Vendedor"
+                            }}</b></span>
                     <a href="{% url 'admin:index' %}"
-                        class="text-sm font-medium text-gray-500 hover:text-primary-600 transition">
-                        Voltar ao Admin
+                        class="text-xs font-medium bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded hover:bg-gray-200 transition">
+                        Admin
                     </a>
                 </div>
             </div>
         </div>
+
+        <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <nav class="flex sm:justify-center space-x-8 overflow-x-auto no-scrollbar" aria-label="Global">
+
+                    <a href="{% url 'orcamentos:novo_orcamento' %}"
+                        class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4">
+                            </path>
+                        </svg>
+                        Novo Orçamento
+                    </a>
+
+                    <a href="#"
+                        class="border-transparent text-gray-500 dark:text-gray-400 hover:border-gray-300 hover:text-gray-700 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                        Meus Orçamentos
+                    </a>
+
+                    <a href="#"
+                        class="border-transparent text-gray-500 dark:text-gray-400 hover:border-gray-300 hover:text-gray-700 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                        Clientes
+                    </a>
+
+                    <a href="#"
+                        class="border-transparent text-gray-500 dark:text-gray-400 hover:border-gray-300 hover:text-gray-700 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                        Impressos (Modelos)
+                    </a>
+
+                    <a href="{% url 'orcamentos:configuracoes' %}"
+                        class="border-transparent text-gray-500 dark:text-gray-400 hover:border-gray-300 hover:text-gray-700 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        Configurações
+                    </a>
+                </nav>
+            </div>
+        </div>
     </header>
 
-    <main class="py-8">
-        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+    <main class="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {% block content %}{% endblock %}
         </div>
     </main>
 
     <script>
-        // Inicializa máscaras simples
         document.addEventListener('DOMContentLoaded', () => {
             const phones = document.querySelectorAll('[data-mask="phone"]');
             phones.forEach(el => VMasker(el).maskPattern('(99) 99999-9999'));

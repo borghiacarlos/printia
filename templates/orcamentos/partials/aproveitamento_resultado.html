@@ -19,7 +19,8 @@
     </div>
 
     {% localize off %}
-    <div class="relative w-full h-80 flex justify-center items-center bg-gray-200/50 dark:bg-gray-900/50 rounded-lg p-4 overflow-hidden">
+    <div
+        class="relative w-full h-80 flex justify-center items-center bg-gray-200/50 dark:bg-gray-900/50 rounded-lg p-4 overflow-hidden">
 
         <svg viewBox="0 0 {{ papel.largura_mm }} {{ papel.altura_mm }}"
             class="max-h-full max-w-full shadow-md bg-white transition-transform duration-500">
@@ -30,16 +31,20 @@
                 fill="none" stroke="#ef4444" stroke-width="0.5" stroke-dasharray="8" opacity="0.3" />
 
             {% for rect in resultado.rectangles %}
-            <rect x="{{ rect.x }}" y="{{ rect.y }}" width="{{ resultado.item_w_final }}" height="{{ resultado.item_h_final }}" fill="#ddd6fe" stroke="#7c3aed" stroke-width="0.5" />
+            <rect x="{{ rect.x }}" y="{{ rect.y }}" width="{{ resultado.item_w_final }}"
+                height="{{ resultado.item_h_final }}" fill="#ddd6fe" stroke="#7c3aed" stroke-width="0.5" />
             {% endfor %}
 
         </svg>
     </div>
 
-    <div class="mt-4 w-full flex justify-between text-xs text-gray-500 bg-white dark:bg-gray-900 p-2 rounded border border-gray-100 dark:border-gray-700">
+    <div
+        class="mt-4 w-full flex justify-between text-xs text-gray-500 bg-white dark:bg-gray-900 p-2 rounded border border-gray-100 dark:border-gray-700">
         <div class="flex gap-4">
-            <span>Orientação: <strong class="text-gray-700 dark:text-gray-300">{{ resultado.orientacao|title }}</strong></span>
-            <span>Corte Final: <strong class="text-gray-700 dark:text-gray-300">{{ corte_w }}x{{ corte_h }}mm</strong></span>
+            <span>Orientação: <strong class="text-gray-700 dark:text-gray-300">{{ resultado.orientacao|title
+                    }}</strong></span>
+            <span>Corte Final: <strong class="text-gray-700 dark:text-gray-300">{{ corte_w }}x{{ corte_h
+                    }}mm</strong></span>
         </div>
         <div class="flex items-center gap-1">
             <span class="w-2 h-2 rounded-full bg-red-400 opacity-50"></span>
@@ -49,6 +54,6 @@
     {% endlocalize %}
 </div>
 
-<input type="number" name="parte-itens_por_folha" id="id_parte-itens_por_folha" value="{{ resultado.total }}"
+<input type="number" name="item-itens_por_folha" id="id_item-itens_por_folha" value="{{ resultado.total }}"
     class="w-full border-gray-200 rounded-md text-sm focus:ring-primary-600 focus:border-primary-600 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 font-bold text-blue-600"
     hx-swap-oob="true">

@@ -121,29 +121,29 @@
             <div class="grid grid-cols-2 gap-4 mb-4">
                 <div>
                     <label class="block text-xs font-medium text-gray-500 mb-1">Papel / Mídia</label>
-                    {{ form_parte.papel }}
+                    {{ form_item.papel }}
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-gray-500 mb-1">Impressora</label>
-                    {{ form_parte.impressora }}
+                    {{ form_item.impressora }}
                 </div>
             </div>
 
             <div class="grid grid-cols-3 gap-4 mb-4">
                 <div class="col-span-2">
                     <label class="block text-xs font-medium text-gray-500 mb-1">Cores</label>
-                    {{ form_parte.cor_impressao }}
+                    {{ form_item.cor_impressao }}
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-gray-500 mb-1">Nº Páginas</label>
-                    {{ form_parte.paginas }}
+                    {{ form_item.paginas }}
                 </div>
             </div>
 
             <div class="flex items-center gap-4 mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
                 <div class="flex-1">
                     <label class="block text-xs font-medium text-blue-600 mb-1">Aproveitamento (un/fl)</label>
-                    {{ form_parte.itens_por_folha }}
+                    {{ form_item.itens_por_folha }}
                 </div>
                 <div class="flex-1 text-right">
                     <button type="button" @click="duplicarParte = true"

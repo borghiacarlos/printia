@@ -14,8 +14,14 @@ from .models import (
     Papel, CompraPapel, SaidaEstoque, Fornecedor, TabelaPrecoPapel,
     Insumo, CompraInsumo, CategoriaInsumo,
     Acabamento, TabelaPrecoAcabamento, CategoriaAcabamento,
-    Impressora, ComponenteImpressora, TrocaSuprimento, LeituraImpressora
+    Impressora, ComponenteImpressora, TrocaSuprimento, LeituraImpressora,
+    GuilhotinaConfig
 )  
+
+@admin.register(GuilhotinaConfig)
+class GuilhotinaConfigAdmin(ModelAdmin):
+    list_display = ['gramatura_min', 'gramatura_max', 'folhas_por_corte']
+    ordering = ['gramatura_min']
 
 @admin.register(Fornecedor)
 class FornecedorAdmin(ModelAdmin):

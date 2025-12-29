@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import ConfiguracaoGlobal
 from materiais.models import Papel
 from .utils import calcular_imposicao
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import ClienteForm, ItemOrcamentoForm, ParteItemForm
+from .forms import ClienteForm, ItemOrcamentoForm, ConfiguracaoGlobalForm
 
 class NovoOrcamentoView(LoginRequiredMixin, TemplateView):
     template_name = "orcamentos/novo_orcamento.html"
@@ -14,7 +16,6 @@ class NovoOrcamentoView(LoginRequiredMixin, TemplateView):
         # Injetamos os formulários no contexto para renderizar no template
         context['form_cliente'] = ClienteForm(prefix='cliente')
         context['form_item'] = ItemOrcamentoForm(prefix='item')
-        context['form_parte'] = ParteItemForm(prefix='parte')
         
         return context
 
@@ -24,7 +25,7 @@ def htmx_calcular_aproveitamento(request):
         largura_final = float(request.GET.get('item-largura_final_mm') or 0)
         altura_final = float(request.GET.get('item-altura_final_mm') or 0)
         sangria = float(request.GET.get('item-sangria_mm') or 0)
-        papel_id = request.GET.get('parte-papel')
+        papel_id = request.GET.get('item-papel')
         
         # 2. Validações básicas
         if not papel_id or largura_final == 0 or altura_final == 0:
@@ -59,3 +60,18 @@ def htmx_calcular_aproveitamento(request):
     except Exception as e:
         print(f"Erro no cálculo: {e}")
         return render(request, 'orcamentos/partials/aproveitamento_vazio.html')
+
+def configuracoes_view(request):
+    # Pega a config existente ou cria a primeira (ID=1)
+    config, created = ConfiguracaoGlobal.objects.get_or_create(pk=1)
+
+    if request.method == 'POST':
+        form = ConfiguracaoGlobalForm(request.POST, request.FILES, instance=config)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Configurações atualizadas com sucesso!")
+            return redirect('configuracoes')
+    else:
+        form = ConfiguracaoGlobalForm(instance=config)
+
+    return render(request, 'orcamentos/configuracoes.html', {'form': form})

@@ -418,3 +418,16 @@ class LeituraImpressora(models.Model):
         verbose_name = "Relatório: Leitura Mensal"
         verbose_name_plural = "Relatório: Leituras Mensais"
         ordering = ['-data_leitura']
+
+class GuilhotinaConfig(models.Model):
+    gramatura_min = models.IntegerField(default=0, verbose_name="Gramatura Mínima")
+    gramatura_max = models.IntegerField(default=999, verbose_name="Gramatura Máxima")
+    folhas_por_corte = models.IntegerField(help_text="Quantas folhas a guilhotina corta por vez (batida) nesta faixa?")
+
+    class Meta:
+        ordering = ['gramatura_min']
+        verbose_name = "Capacidade de Guilhotina"
+        verbose_name_plural = "Configuração de Guilhotina"
+
+    def __str__(self):
+        return f"{self.gramatura_min}g até {self.gramatura_max}g: {self.folhas_por_corte} fls/corte"
