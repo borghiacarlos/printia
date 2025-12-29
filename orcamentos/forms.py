@@ -28,23 +28,29 @@ class ItemOrcamentoForm(forms.ModelForm):
             'quantidade': forms.NumberInput(attrs={'class': INPUT_CLASS}),
             'largura_final_mm': forms.NumberInput(attrs={
             'class': INPUT_CLASS,
+            'step': '0.1',                                # Permite decimais
             'hx-get': '/orcamentos/htmx/aproveitamento/', # Chama a URL
             'hx-trigger': 'keyup changed delay:500ms',    # Espera 500ms após digitar
             'hx-target': '#aproveitamento-visual',        # Onde desenhar o resultado
+            'hx-swap': 'outerHTML',                       # Substitui o elemento todo
             'hx-include': 'closest form'                  # Envia TODOS os dados do form
         }),
         'altura_final_mm': forms.NumberInput(attrs={
             'class': INPUT_CLASS,
+            'step': '0.1',
             'hx-get': '/orcamentos/htmx/aproveitamento/',
             'hx-trigger': 'keyup changed delay:500ms',
             'hx-target': '#aproveitamento-visual',
+            'hx-swap': 'outerHTML',
             'hx-include': 'closest form'
         }),
         'sangria_mm': forms.NumberInput(attrs={
             'class': INPUT_CLASS,
+            'step': '0.1',
             'hx-get': '/orcamentos/htmx/aproveitamento/',
             'hx-trigger': 'keyup changed delay:500ms',
             'hx-target': '#aproveitamento-visual',
+            'hx-swap': 'outerHTML',
             'hx-include': 'closest form'
         }),
             'capacidade_corte_folhas': forms.NumberInput(attrs={'class': INPUT_CLASS}),
@@ -61,6 +67,7 @@ class ParteItemForm(forms.ModelForm):
             'hx-get': '/orcamentos/htmx/aproveitamento/',
             'hx-trigger': 'change',                       # Dispara assim que muda a opção
             'hx-target': '#aproveitamento-visual',
+            'hx-swap': 'outerHTML',
             'hx-include': 'closest form'
         }),
             'impressora': forms.Select(attrs={'class': SELECT_CLASS}),

@@ -44,4 +44,29 @@ def calcular_imposicao(papel_largura, papel_altura, item_largura, item_altura, m
             'orientacao': 'rotacionado'
         })
     
+    # Calcula dimensões finais do grid e offset para centralização
+    grid_w = melhor_cenario['cols'] * melhor_cenario['item_w_final']
+    grid_h = melhor_cenario['rows'] * melhor_cenario['item_h_final']
+    
+    # Centraliza no papel
+    offset_x = (papel_largura - grid_w) / 2
+    offset_y = (papel_altura - grid_h) / 2
+
+    # Gera lista de posições absolutas de cada retângulo
+    rectangles = []
+    for row in range(melhor_cenario['rows']):
+        for col in range(melhor_cenario['cols']):
+            rectangles.append({
+                'x': offset_x + (col * melhor_cenario['item_w_final']),
+                'y': offset_y + (row * melhor_cenario['item_h_final'])
+            })
+
+    melhor_cenario.update({
+        'grid_w': grid_w,
+        'grid_h': grid_h,
+        'offset_x': offset_x,
+        'offset_y': offset_y,
+        'rectangles': rectangles
+    })
+    
     return melhor_cenario

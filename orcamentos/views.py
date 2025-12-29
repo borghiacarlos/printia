@@ -21,9 +21,9 @@ class NovoOrcamentoView(LoginRequiredMixin, TemplateView):
 def htmx_calcular_aproveitamento(request):
     try:
         # 1. Coleta dados do Request
-        largura_final = int(request.GET.get('item-largura_final_mm') or 0)
-        altura_final = int(request.GET.get('item-altura_final_mm') or 0)
-        sangria = int(request.GET.get('item-sangria_mm') or 0)
+        largura_final = float(request.GET.get('item-largura_final_mm') or 0)
+        altura_final = float(request.GET.get('item-altura_final_mm') or 0)
+        sangria = float(request.GET.get('item-sangria_mm') or 0)
         papel_id = request.GET.get('parte-papel')
         
         # 2. Validações básicas
