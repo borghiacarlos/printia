@@ -1,251 +1,341 @@
 {% extends 'base_orcamento.html' %}
 
 {% block content %}
-<form method="post" class="grid grid-cols-12 gap-6 items-start" x-data="{ tipoCliente: 'PF', duplicarParte: false }">
+<div class="mb-8">
+    <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Novo Orçamento</h1>
+    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Preencha as informações abaixo para gerar a cotação.</p>
+</div>
+
+<form method="post" class="grid grid-cols-12 gap-x-8 gap-y-8 items-start" x-data="{ tipoCliente: 'PF' }">
     {% csrf_token %}
 
-    <div class="col-span-12 lg:col-span-3 space-y-6">
+    <div class="col-span-12 lg:col-span-9 space-y-8">
 
-        <div
-            class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-            <div class="px-5 py-4 border-b border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50">
-                <h3 class="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                    <svg class="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                    </svg>
-                    Dados do Cliente
-                </h3>
-            </div>
-
-            <div class="p-5 space-y-4">
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1">Tipo de Pessoa</label>
-                    {{ form_cliente.tipo }}
-                </div>
-
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1">Nome / Razão Social</label>
-                    {{ form_cliente.nome }}
-                </div>
-
-                <div x-show="tipoCliente == 'PJ'" style="display: none;">
-                    <label class="block text-xs font-medium text-gray-500 mb-1">Nome Fantasia</label>
-                    {{ form_cliente.nome_fantasia }}
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-1">Telefone</label>
-                        {{ form_cliente.telefone }}
+        <div class="bg-white dark:bg-gray-800 shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
+            <div class="px-4 py-6 sm:p-8">
+                <div class="flex items-center gap-x-3 border-b border-gray-900/10 dark:border-gray-700 pb-5 mb-5">
+                    <div
+                        class="flex-none rounded-full bg-primary-50 p-1 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400">
+                        <div
+                            class="h-5 w-5 rounded-full border-2 border-current flex items-center justify-center text-[10px] font-bold">
+                            1</div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-1">CPF/CNPJ</label>
-                        {{ form_cliente.documento }}
-                    </div>
+                    <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Cliente e Condições</h2>
                 </div>
 
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1">Email</label>
-                    {{ form_cliente.email }}
+                <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
+                    <div class="sm:col-span-2">
+                        <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">Tipo</label>
+                        <div class="mt-2">
+                            {{ form_cliente.tipo }}
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-4">
+                        <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">Nome / Razão
+                            Social</label>
+                        <div class="mt-2">
+                            {{ form_cliente.nome }}
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-3" x-show="tipoCliente == 'PJ'">
+                        <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">Nome
+                            Fantasia</label>
+                        <div class="mt-2">
+                            {{ form_cliente.nome_fantasia }}
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">Telefone /
+                            WhatsApp</label>
+                        <div class="mt-2">
+                            {{ form_cliente.telefone }}
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">Comissão
+                            (%)</label>
+                        <div class="relative mt-2 rounded-md shadow-sm">
+                            <input type="number" name="percentual_comissao"
+                                value="{{ orcamento.percentual_comissao|default:'10.00' }}" step="0.1"
+                                class="block w-full rounded-md border-0 px-3 py-2 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6 dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-700">
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                <span class="text-gray-500 sm:text-sm">%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label
+                            class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">E-mail</label>
+                        <div class="mt-2">
+                            {{ form_cliente.email }}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-5">
-            <h3 class="font-semibold text-sm text-gray-900 dark:text-white mb-3">Valores Padrão</h3>
-            <div class="space-y-3 text-sm">
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-500">Comissão (%)</span>
-                    <input type="number" value="10.00"
-                        class="w-20 text-right p-1 rounded border-gray-200 text-xs bg-gray-50 dark:bg-gray-900 dark:border-gray-700">
+        <div class="bg-white dark:bg-gray-800 shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
+            <div class="px-4 py-6 sm:p-8">
+                <div class="flex items-center gap-x-3 border-b border-gray-900/10 dark:border-gray-700 pb-5 mb-5">
+                    <div
+                        class="flex-none rounded-full bg-primary-50 p-1 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400">
+                        <div
+                            class="h-5 w-5 rounded-full border-2 border-current flex items-center justify-center text-[10px] font-bold">
+                            2</div>
+                    </div>
+                    <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Definição do Produto
+                    </h2>
                 </div>
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-500">Imposto (%)</span>
-                    <input type="number" value="8.00"
-                        class="w-20 text-right p-1 rounded border-gray-200 text-xs bg-gray-50 dark:bg-gray-900 dark:border-gray-700">
+
+                <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
+                    <div class="sm:col-span-4">
+                        <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">Título do
+                            Trabalho</label>
+                        <div class="mt-2">
+                            {{ form_item.titulo }}
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label
+                            class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">Quantidades</label>
+                        <div class="mt-2">
+                            {{ form_item.quantidades_input }}
+                        </div>
+                    </div>
+
+                    <div class="col-span-full">
+                        <div class="rounded-lg border border-dashed border-gray-900/25 dark:border-gray-700 p-6">
+                            <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-4">Formato Final
+                                (Fechado)</h3>
+                            <div class="flex gap-6">
+                                <div class="flex-1">
+                                    <label class="block text-xs text-gray-500 mb-1">Largura (mm)</label>
+                                    {{ form_item.largura_final_mm }}
+                                </div>
+                                <div class="flex-1">
+                                    <label class="block text-xs text-gray-500 mb-1">Altura (mm)</label>
+                                    {{ form_item.altura_final_mm }}
+                                </div>
+                                <div class="flex-1">
+                                    <label class="block text-xs text-gray-500 mb-1">Sangria (mm)</label>
+                                    {{ form_item.sangria_mm }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-    </div>
-
-    <div class="col-span-12 lg:col-span-6 space-y-6">
-
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-            <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">O que vamos produzir?</h2>
-
-            <div class="grid grid-cols-12 gap-4 mb-4">
-                <div class="col-span-8">
-                    <label class="block text-xs font-medium text-gray-500 mb-1">Título do Item</label>
-                    {{ form_item.titulo }}
-                </div>
-                <div class="col-span-4">
-                    <label class="block text-xs font-medium text-gray-500 mb-1">Quantidade</label>
-                    {{ form_item.quantidade }}
-                </div>
-            </div>
-
-            <div
-                class="grid grid-cols-3 gap-4 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-dashed border-gray-300 dark:border-gray-700">
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1">Largura (mm)</label>
-                    {{ form_item.largura_final_mm }}
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1">Altura (mm)</label>
-                    {{ form_item.altura_final_mm }}
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1">Sangria (mm)</label>
-                    {{ form_item.sangria_mm }}
-                </div>
-            </div>
-
-
         </div>
 
         <div id="aproveitamento-visual"
-            class="mt-4 h-32 bg-gray-100 dark:bg-gray-900 rounded-xl border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center text-gray-400 text-sm">
-            Desenho do aproveitamento aparecerá aqui...
+            class="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-gray-50/50 py-10 dark:bg-gray-800/50 dark:border-gray-700">
+            <svg class="mx-auto h-10 w-10 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                aria-hidden="true">
+                <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+            </svg>
+            <h3 class="mt-2 text-sm font-semibold text-gray-900 dark:text-white">Esquema de Corte</h3>
+            <p class="mt-1 text-sm text-gray-500">O desenho do aproveitamento aparecerá aqui.</p>
         </div>
 
-        <div
-            class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-l-4 border-primary-500 dark:border-gray-700 p-6 relative">
-            <div class="flex justify-between items-start mb-4">
-                <h3 class="font-bold text-gray-900 dark:text-white">Impressão e Papel</h3>
-                <span class="text-xs bg-primary-100 text-primary-700 px-2 py-1 rounded font-medium">Parte 1
-                    (Corpo)</span>
-            </div>
+        <div class="bg-white dark:bg-gray-800 shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
+            <div class="px-4 py-6 sm:p-8">
+                <div class="flex items-center gap-x-3 border-b border-gray-900/10 dark:border-gray-700 pb-5 mb-5">
+                    <div
+                        class="flex-none rounded-full bg-primary-50 p-1 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400">
+                        <div
+                            class="h-5 w-5 rounded-full border-2 border-current flex items-center justify-center text-[10px] font-bold">
+                            4</div>
+                    </div>
+                    <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Papel e Impressão</h2>
+                </div>
 
-            <div class="grid grid-cols-2 gap-4 mb-4">
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1">Papel / Mídia</label>
-                    {{ form_item.papel }}
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1">Impressora</label>
-                    {{ form_item.impressora }}
-                </div>
-            </div>
-
-            <div class="grid grid-cols-3 gap-4 mb-4">
-                <div class="col-span-2">
-                    <label class="block text-xs font-medium text-gray-500 mb-1">Cores</label>
-                    {{ form_item.cor_impressao }}
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1">Nº Páginas</label>
-                    {{ form_item.paginas }}
-                </div>
-            </div>
-
-            <div class="flex items-center gap-4 mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
-                <div class="flex-1">
-                    <label class="block text-xs font-medium text-blue-600 mb-1">Aproveitamento (un/fl)</label>
-                    {{ form_item.itens_por_folha }}
-                </div>
-                <div class="flex-1 text-right">
-                    <button type="button" @click="duplicarParte = true"
-                        class="text-xs text-primary-600 hover:text-primary-800 font-medium flex items-center justify-end gap-1">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                        </svg>
-                        Adicionar Capa/Encarte
-                    </button>
+                <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2">
+                    <div class="sm:col-span-1">
+                        <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">Papel /
+                            Mídia</label>
+                        <div class="mt-2">
+                            {{ form_item.papel }}
+                        </div>
+                    </div>
+                    <div class="sm:col-span-1">
+                        <label
+                            class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">Máquina</label>
+                        <div class="mt-2">
+                            {{ form_item.impressora }}
+                        </div>
+                    </div>
+                    <div class="sm:col-span-1">
+                        <label
+                            class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">Cores</label>
+                        <div class="mt-2">
+                            {{ form_item.cor_impressao }}
+                        </div>
+                    </div>
+                    <div class="sm:col-span-1">
+                        <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">Páginas /
+                            Lâminas</label>
+                        <div class="mt-2">
+                            {{ form_item.paginas }}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div x-show="duplicarParte" x-transition
-            class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-l-4 border-indigo-500 p-6 relative">
-            <div class="flex justify-between items-start mb-4">
-                <h3 class="font-bold text-gray-900 dark:text-white">Capa / Encarte</h3>
-                <button type="button" @click="duplicarParte = false" class="text-red-500 hover:text-red-700">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                        </path>
-                    </svg>
-                </button>
-            </div>
-            <p class="text-sm text-gray-500">Campos duplicados virão aqui...</p>
-        </div>
+        <div class="bg-white dark:bg-gray-800 shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
+            <div class="px-4 py-6 sm:p-8">
+                <div class="flex items-center gap-x-3 border-b border-gray-900/10 dark:border-gray-700 pb-5 mb-5">
+                    <div
+                        class="flex-none rounded-full bg-primary-50 p-1 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400">
+                        <div
+                            class="h-5 w-5 rounded-full border-2 border-current flex items-center justify-center text-[10px] font-bold">
+                            5</div>
+                    </div>
+                    <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Acabamentos e Insumos
+                    </h2>
+                </div>
 
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-            <h3 class="font-bold text-gray-900 dark:text-white mb-4">Acabamentos e Insumos</h3>
-            <div class="space-y-3">
-                <div class="flex gap-2">
-                    <select class="w-full border-gray-200 rounded-md text-sm dark:bg-gray-900 dark:border-gray-700">
-                        <option>Selecione um acabamento...</option>
-                    </select>
-                    <input type="number" placeholder="Qtd"
-                        class="w-24 border-gray-200 rounded-md text-sm dark:bg-gray-900 dark:border-gray-700">
-                    <button type="button" class="bg-gray-100 p-2 rounded hover:bg-gray-200 dark:bg-gray-700">+</button>
+                <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2">
+                    <div>
+                        <label
+                            class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300 mb-2">Acabamentos</label>
+                        {{ form_item.acabamentos }}
+                        <p class="mt-2 text-xs text-gray-500">Ctrl + Clique para selecionar vários.</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300 mb-2">Insumos
+                            Extras</label>
+                        {{ form_item.insumos }}
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
-                <label class="block text-xs font-medium text-gray-500 mb-1">Refile: Capacidade da Guilhotina
-                    (fls/corte)</label>
-                {{ form_item.capacidade_corte_folhas }}
+        <div class="bg-white dark:bg-gray-800 shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
+            <div class="px-4 py-6 sm:p-8">
+                <div class="flex items-center gap-x-3 border-b border-gray-900/10 dark:border-gray-700 pb-5 mb-5">
+                    <div
+                        class="flex-none rounded-full bg-gray-100 p-1 text-gray-600 dark:bg-gray-700 dark:text-gray-400">
+                        <div
+                            class="h-5 w-5 rounded-full border-2 border-current flex items-center justify-center text-[10px] font-bold">
+                            6</div>
+                    </div>
+                    <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Custos Adicionais &
+                        Taxas</h2>
+                </div>
+
+                <div class="grid max-w-2xl grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-4">
+                    <div>
+                        <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">Imposto
+                            (%)</label>
+                        <div class="relative mt-2 rounded-md shadow-sm">
+                            <input type="number" name="percentual_imposto" value="8.00"
+                                class="block w-full rounded-md border-0 px-3 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6 dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-700">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">Cartão
+                            (%)</label>
+                        <div class="relative mt-2 rounded-md shadow-sm">
+                            <input type="number" name="taxa_cartao" value="4.50"
+                                class="block w-full rounded-md border-0 px-3 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6 dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-700">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">Custo Arte
+                            (R$)</label>
+                        <div class="relative mt-2 rounded-md shadow-sm">
+                            <input type="number" name="custo_arte" value="0.00"
+                                class="block w-full rounded-md border-0 px-3 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6 dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-700">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">Frete
+                            (R$)</label>
+                        <div class="relative mt-2 rounded-md shadow-sm">
+                            <input type="number" name="valor_frete" value="0.00"
+                                class="block w-full rounded-md border-0 px-3 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6 dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-700">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
     </div>
 
     <div class="col-span-12 lg:col-span-3">
-        <div class="sticky top-24 space-y-4">
+        <div class="sticky top-6 space-y-4">
 
-            <div class="bg-gray-900 text-white rounded-xl shadow-lg p-6">
-                <h3 class="text-sm font-medium text-gray-400 uppercase tracking-wider mb-6">Resumo do Pedido</h3>
+            {% if resultados %}
+            {% for res in resultados %}
+            <div class="overflow-hidden rounded-xl bg-gray-900 shadow-xl ring-1 ring-gray-800">
+                <div class="flex items-center justify-between border-b border-gray-800 bg-gray-950/30 px-4 py-3">
+                    <span class="text-xs font-bold uppercase tracking-widest text-primary-400">{{ res.quantidade }}
+                        UNIDADES</span>
+                    <span class="rounded bg-gray-800 px-2 py-0.5 text-[10px] text-white">{{ res.unitario|floatformat:2
+                        }} un</span>
+                </div>
 
-                <div class="space-y-3 mb-6">
-                    <div class="flex justify-between text-sm">
-                        <span class="text-gray-400">Total Produção</span>
-                        <span>R$ 0,00</span>
+                <div class="space-y-3 px-4 py-4 text-xs text-gray-300">
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">Papel</span>
+                        <span>R$ {{ res.custo_papel|floatformat:2 }}</span>
                     </div>
-                    <div class="flex justify-between text-sm">
-                        <span class="text-gray-400">Acabamentos</span>
-                        <span>R$ 0,00</span>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">Impressão</span>
+                        <span>R$ {{ res.custo_impressao|floatformat:2 }}</span>
                     </div>
-                    <div class="flex justify-between text-sm text-green-400">
-                        <span>Frete</span>
-                        <span>R$ 0,00</span>
-                    </div>
-                    <div class="flex justify-between text-sm text-yellow-400">
-                        <span>Impostos (8%)</span>
-                        <span>R$ 0,00</span>
+                    <div class="flex justify-between text-blue-300">
+                        <span>Acabam. + Corte</span>
+                        <span>R$ {{ res.custo_acabamento|floatformat:2 }}</span>
                     </div>
                 </div>
 
-                <div class="border-t border-gray-700 pt-4 mb-6">
-                    <div class="flex justify-between items-end">
-                        <span class="text-lg font-bold">Total Final</span>
-                        <span class="text-3xl font-bold text-primary-400">R$ 0,00</span>
-                    </div>
-                    <div class="text-right text-xs text-gray-500 mt-1">
-                        Custo Estimado: R$ 0,00 (Lucro: R$ 0,00)
+                <div class="border-t border-gray-800 bg-gray-800/30 px-4 py-4">
+                    <div class="flex items-end justify-between">
+                        <span class="text-xs text-gray-400">Total Final</span>
+                        <span class="text-xl font-bold text-white">R$ {{ res.valor_final|floatformat:2 }}</span>
                     </div>
                 </div>
+            </div>
+            {% endfor %}
 
-                <button type="submit"
-                    class="w-full bg-primary-600 hover:bg-primary-500 text-white font-bold py-3 px-4 rounded-lg transition shadow-lg shadow-primary-900/50">
-                    Gerar Orçamento
-                </button>
+            <a href="{% url 'novo_orcamento' %}"
+                class="block w-full rounded-md bg-white px-3 py-2.5 text-center text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition">
+                Limpar / Novo
+            </a>
+
+            {% else %}
+            <div
+                class="rounded-xl bg-white p-6 text-center shadow-sm ring-1 ring-gray-900/5 dark:bg-gray-800 dark:ring-gray-700">
+                <div
+                    class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700">
+                    <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="mt-2 text-sm font-semibold text-gray-900 dark:text-white">Resumo do Pedido</h3>
+                <p class="mt-1 text-xs text-gray-500">Preencha os dados e clique em calcular.</p>
             </div>
 
-            <div class="grid grid-cols-2 gap-2">
-                <button type="button"
-                    class="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-medium hover:bg-gray-50">
-                    Limpar
-                </button>
-                <button type="button"
-                    class="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-medium hover:bg-gray-50">
-                    Salvar Rascunho
-                </button>
-            </div>
+            <button type="submit"
+                class="w-full flex items-center justify-center gap-2 rounded-md bg-primary-600 px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 transition">
+                <span>Calcular Orçamento</span>
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3">
+                    </path>
+                </svg>
+            </button>
+            {% endif %}
 
         </div>
     </div>

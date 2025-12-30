@@ -1,4 +1,7 @@
-{% load l10n %}
+
+import os
+
+content = r"""{% load l10n %}
 
 <div id="aproveitamento-visual"
     class="mt-6 w-full bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700 p-6 flex flex-col items-center shadow-inner transition-all duration-300 ease-in-out">
@@ -55,3 +58,10 @@
 <input type="number" name="item-itens_por_folha" id="id_item-itens_por_folha" value="{{ resultado.total }}"
     class="w-full border-gray-200 rounded-md text-sm focus:ring-primary-600 focus:border-primary-600 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 font-bold text-blue-600"
     hx-swap-oob="true">
+"""
+
+file_path = r"d:\print_ia\templates\orcamentos\partials\aproveitamento_resultado.html"
+
+with open(file_path, 'w', encoding='utf-8') as f:
+    f.write(content.strip())
+print(f"File {file_path} overwritten successfully.")

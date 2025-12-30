@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+
+import os
+
+content = r"""<!DOCTYPE html>
 <html lang="pt-br" class="h-full bg-gray-50 dark:bg-gray-900">
 
 <head>
@@ -118,4 +121,10 @@
     </script>
 </body>
 
-</html>
+</html>"""
+
+file_path = r"d:\print_ia\templates\base_orcamento.html"
+
+with open(file_path, 'w', encoding='utf-8') as f:
+    f.write(content.strip())
+print(f"File {file_path} overwritten successfully.")
