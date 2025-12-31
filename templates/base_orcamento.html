@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br" class="h-full bg-gray-50 dark:bg-gray-900">
 
@@ -110,12 +111,7 @@
         </div>
     </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const phones = document.querySelectorAll('[data-mask="phone"]');
-            phones.forEach(el => VMasker(el).maskPattern('(99) 99999-9999'));
-        });
-    </script>
+    <script src="{% static 'js/masks.js' %}"></script>
 </body>
 
 </html>

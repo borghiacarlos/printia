@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import ConfiguracaoGlobal
+from .models import ConfiguracaoGlobal, Cliente
 from materiais.models import Papel
 from .utils import calcular_imposicao
 from django.views.generic import TemplateView
@@ -75,3 +75,18 @@ def configuracoes_view(request):
         form = ConfiguracaoGlobalForm(instance=config)
 
     return render(request, 'orcamentos/configuracoes.html', {'form': form})
+
+def buscar_cliente(request):
+    query = request.GET.get('q', '')
+    clientes = []
+    
+    if len(query) > 2: # Só busca se tiver mais de 2 caracteres
+        clientes = Cliente.objects.filter(
+            nome__icontains=query
+        )[:5] # Limita a 5 resultados
+        
+        # Se quiser buscar por documento também:
+        # from django.db.models import Q
+        # clientes = Cliente.objects.filter(Q(nome__icontains=query) | Q(documento__icontains=query))[:5]
+
+    return render(request, 'orcamentos/partials/resultados_busca_cliente.html', {'clientes': clientes})

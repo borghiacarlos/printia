@@ -13,16 +13,73 @@
 
         <div class="bg-white dark:bg-gray-800 shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
             <div class="px-4 py-6 sm:p-8">
-                <div class="flex items-center gap-x-3 border-b border-gray-900/10 dark:border-gray-700 pb-5 mb-5">
-                    <div
-                        class="flex-none rounded-full bg-primary-50 p-1 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400">
+                <div
+                    class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-900/10 dark:border-gray-700 pb-5 mb-5 gap-4">
+                    <div class="flex items-center gap-x-3">
                         <div
-                            class="h-5 w-5 rounded-full border-2 border-current flex items-center justify-center text-[10px] font-bold">
-                            1</div>
+                            class="flex-none rounded-full bg-primary-50 p-1 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400">
+                            <div
+                                class="h-5 w-5 rounded-full border-2 border-current flex items-center justify-center text-[10px] font-bold">
+                                1
+                            </div>
+                        </div>
+                        <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Cliente</h2>
                     </div>
-                    <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Cliente e Condições</h2>
-                </div>
 
+                    <div class="flex items-center gap-2">
+                        <button type="button"
+                            class="inline-flex items-center gap-x-1.5 rounded-md bg-primary-600 px-2.5 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-primary-500 transition">
+                            <svg class="-ml-0.5 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                            Novo
+                        </button>
+                        <button type="button"
+                            class="inline-flex items-center gap-x-1.5 rounded-md bg-white px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 dark:ring-gray-700 transition">
+                            <svg class="-ml-0.5 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                            </svg>
+                            Editar
+                        </button>
+                        <button type="button"
+                            class="inline-flex items-center gap-x-1.5 rounded-md bg-white px-2.5 py-1.5 text-xs font-semibold text-red-600 shadow-sm ring-1 ring-inset ring-red-100 hover:bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:ring-gray-700 transition">
+                            <svg class="-ml-0.5 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                            </svg>
+                            Excluir
+                        </button>
+                    </div>
+                </div>
+                <div class="mb-6 relative" x-data="{ searchOpen: false }">
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Carregar Cliente Existente</label>
+                    <div class="relative">
+                        <input type="text"
+                            class="block w-full rounded-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6 dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-700"
+                            placeholder="Digite o nome ou documento para buscar..." autocomplete="off"
+                            @focus="searchOpen = true" @click.outside="searchOpen = false"
+                            hx-get="{% url 'orcamentos:buscar_cliente' %}" hx-trigger="keyup changed delay:500ms"
+                            hx-target="#resultados-busca" name="q">
+
+                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                            <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+
+                        <div id="resultados-busca"
+                            class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm dark:bg-gray-800"
+                            x-show="searchOpen" style="display: none;">
+                        </div>
+                    </div>
+                </div>
                 <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
                     <div class="sm:col-span-2">
                         <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">Tipo</label>
@@ -32,14 +89,22 @@
                     </div>
 
                     <div class="sm:col-span-4">
-                        <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">Nome / Razão
-                            Social</label>
+                        <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300"
+                            x-text="tipoCliente === 'PJ' ? 'CNPJ' : 'CPF'">CPF</label>
+                        <div class="mt-2">
+                            {{ form_cliente.documento }}
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-6">
+                        <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300"
+                            x-text="tipoCliente === 'PJ' ? 'Razão Social' : 'Nome Completo'">Nome</label>
                         <div class="mt-2">
                             {{ form_cliente.nome }}
                         </div>
                     </div>
 
-                    <div class="sm:col-span-3" x-show="tipoCliente == 'PJ'">
+                    <div class="sm:col-span-6" x-show="tipoCliente == 'PJ'" x-transition>
                         <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">Nome
                             Fantasia</label>
                         <div class="mt-2">
@@ -56,6 +121,14 @@
                     </div>
 
                     <div class="sm:col-span-3">
+                        <label
+                            class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">E-mail</label>
+                        <div class="mt-2">
+                            {{ form_cliente.email }}
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
                         <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">Comissão
                             (%)</label>
                         <div class="relative mt-2 rounded-md shadow-sm">
@@ -65,14 +138,6 @@
                             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                                 <span class="text-gray-500 sm:text-sm">%</span>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="sm:col-span-3">
-                        <label
-                            class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">E-mail</label>
-                        <div class="mt-2">
-                            {{ form_cliente.email }}
                         </div>
                     </div>
                 </div>
@@ -340,4 +405,27 @@
         </div>
     </div>
 </form>
+<script>
+    function selecionarCliente(dados) {
+        // 'dados' é um objeto JS com as informações do cliente
+
+        // 1. Preenche os campos (IDs padrão do Django form prefix='cliente')
+        document.getElementById('id_cliente-tipo').value = dados.tipo;
+        document.getElementById('id_cliente-nome').value = dados.nome;
+        document.getElementById('id_cliente-documento').value = dados.documento;
+        document.getElementById('id_cliente-telefone').value = dados.telefone;
+        document.getElementById('id_cliente-email').value = dados.email;
+
+        if (dados.tipo === 'PJ' && document.getElementById('id_cliente-nome_fantasia')) {
+            document.getElementById('id_cliente-nome_fantasia').value = dados.nome_fantasia;
+        }
+
+        // 2. Dispara eventos para atualizar AlpineJS e Máscaras
+        document.getElementById('id_cliente-tipo').dispatchEvent(new Event('change'));
+        document.getElementById('id_cliente-documento').dispatchEvent(new Event('input'));
+
+        // 3. Fecha o dropdown (opcional, simulando clique fora)
+        document.body.click();
+    }
+</script>
 {% endblock %}

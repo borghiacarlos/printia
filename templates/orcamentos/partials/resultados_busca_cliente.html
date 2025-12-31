@@ -1,0 +1,32 @@
+{% if clientes %}
+<ul class="py-1" role="listbox">
+    {% for cliente in clientes %}
+    <li class="relative cursor-pointer select-none py-2 pl-3 pr-9 text-gray-900 hover:bg-primary-50 dark:text-gray-200 dark:hover:bg-gray-700"
+        role="option" onclick="selecionarCliente({
+                tipo: '{{ cliente.tipo }}',
+                nome: '{{ cliente.nome|escapejs }}',
+                nome_fantasia: '{{ cliente.nome_fantasia|escapejs }}',
+                documento: '{{ cliente.documento|default: }}',
+                telefone: '{{ cliente.telefone|default: }}',
+                email: '{{ cliente.email|default: }}'
+            })">
+
+        <div class="flex items-center">
+            <span class="font-medium truncate mr-2">{{ cliente.nome }}</span>
+            {% if cliente.nome_fantasia %}
+            <span class="text-xs text-gray-500 truncate">({{ cliente.nome_fantasia }})</span>
+            {% endif %}
+        </div>
+
+        <div class="text-xs text-gray-400">
+            {% if cliente.documento %}Doc: {{ cliente.documento }} • {% endif %}
+            Tel: {{ cliente.telefone }}
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<div class="py-2 px-3 text-sm text-gray-500 italic">
+    Nenhum cliente encontrado.
+</div>
+{% endif %}
