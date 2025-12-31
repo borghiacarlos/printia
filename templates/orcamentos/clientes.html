@@ -1,0 +1,89 @@
+{% extends 'base_orcamento.html' %}
+
+{% block content %}
+<div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Meus Clientes</h1>
+        <p class="mt-2 text-sm text-gray-700 dark:text-gray-400">Gerenciamento da carteira de clientes.</p>
+    </div>
+    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+        <a href="{% url 'orcamentos:novo_orcamento' %}"
+            class="block rounded-md bg-primary-600 px-3 py-2 text-center text-sm font-semibold text-white hover:bg-primary-500">
+            + Novo Cliente (via Orçamento)
+        </a>
+    </div>
+</div>
+
+<div class="mt-6 mb-6">
+    <form method="get" class="flex gap-2">
+        <input type="text" name="q" value="{{ request.GET.q|default:'' }}"
+            class="block w-full rounded-md border-0 py-2 pl-3 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-primary-600 sm:text-sm dark:bg-gray-800 dark:text-white dark:ring-gray-700"
+            placeholder="Buscar por nome, documento ou email...">
+        <button type="submit"
+            class="rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+            Buscar
+        </button>
+    </form>
+</div>
+
+<div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg bg-white dark:bg-gray-800">
+    <table class="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
+        <thead class="bg-gray-50 dark:bg-gray-900">
+            <tr>
+                <th class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Cliente</th>
+                <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Documento</th>
+                <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Contato</th>
+                <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Tipo</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+            {% for cliente in clientes %}
+            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-white">
+                    {{ cliente.nome }}
+                    {% if cliente.nome_fantasia %}
+                    <span class="block text-xs text-gray-500 font-normal">{{ cliente.nome_fantasia }}</span>
+                    {% endif %}
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
+                    {{ cliente.documento|default:"-" }}
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
+                    <div>{{ cliente.telefone|default:"-" }}</div>
+                    <div class="text-xs">{{ cliente.email }}</div>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
+                    <span
+                        class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium 
+                        {% if cliente.tipo == 'PJ' %}bg-blue-50 text-blue-700{% else %}bg-green-50 text-green-700{% endif %}">
+                        {{ cliente.get_tipo_display }}
+                    </span>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="py-8 text-center text-sm text-gray-500">Nenhum cliente encontrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if is_paginated %}
+<div class="mt-4 flex justify-between items-center">
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}"
+        class="text-sm font-medium text-primary-600 hover:text-primary-500">&larr; Anterior</a>
+    {% else %}
+    <span></span>
+    {% endif %}
+
+    <span class="text-sm text-gray-500">Pág {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}"
+        class="text-sm font-medium text-primary-600 hover:text-primary-500">Próxima &rarr;</a>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

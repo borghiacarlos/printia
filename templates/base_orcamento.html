@@ -52,7 +52,13 @@
                 </div>
 
                 <div class="flex items-center gap-4">
-                    <span class="text-sm text-gray-500 hidden sm:inline">Olá, <b>{% if request.user.is_authenticated %}{{ request.user.username }}{% else %}Vendedor{% endif %}</b></span>
+                    <span class="text-sm text-gray-500 hidden sm:inline">Olá, <b>
+                        {% if request.user.is_authenticated %}
+                            {{ request.user.username }}
+                        {% else %}
+                            Vendedor
+                        {% endif %}
+                    </b></span>
                     <a href="{% url 'admin:index' %}"
                         class="text-xs font-medium bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded hover:bg-gray-200 transition">
                         Admin
@@ -79,7 +85,7 @@
                         Meus Orçamentos
                     </a>
 
-                    <a href="#"
+                    <a href="{% url 'orcamentos:lista_clientes' %}"
                         class="border-transparent text-gray-500 dark:text-gray-400 hover:border-gray-300 hover:text-gray-700 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
                         Clientes
                     </a>

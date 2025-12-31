@@ -5,7 +5,9 @@ from .views import NovoOrcamentoView, htmx_calcular_aproveitamento, configuracoe
 app_name = 'orcamentos'
 
 urlpatterns = [
-    path('novo/', NovoOrcamentoView.as_view(), name='novo_orcamento'),
+    path('novo/', views.NovoOrcamentoView.as_view(), name='novo_orcamento'),
+
+    path('clientes/', views.ClientesListView.as_view(), name='lista_clientes'),
     
     path('configuracoes/', configuracoes_view, name='configuracoes'),
 
